@@ -273,3 +273,145 @@
     transform: scale(1.18);
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Hero chapter: a tall, naturally scrolling section with a sticky stage.
+ * Progress through it drives the beacon → arc → signals → system sequence.
+ * ------------------------------------------------------------------------- */
+.hero-track {
+  height: 240svh;
+}
+@media (min-width: 1024px) {
+  .hero-track {
+    height: 310svh;
+  }
+  /* Desktop: the copy sticks beside the stage for the whole chapter. */
+  .hero-copy {
+    position: sticky;
+    top: 5rem;
+    height: calc(100svh - 5rem);
+    min-height: 34rem;
+  }
+}
+.hero-sticky {
+  height: calc(100svh - 5rem);
+  min-height: 34rem;
+}
+/* Sized as a container so the stage can fit itself to whatever space is left. */
+.hero-stage-slot {
+  container-type: size;
+  min-height: 0;
+}
+.hero-stage-frame {
+  /* Locked to the SVG viewBox ratio so % positions in HTML match SVG coordinates. */
+  aspect-ratio: 640 / 520;
+  width: min(100cqw, 100cqh * 640 / 520);
+}
+.hero-stage-backdrop {
+  background:
+    radial-gradient(
+      60% 55% at 14% 82%,
+      color-mix(in oklab, var(--glow) 13%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 45% at 88% 22%,
+      color-mix(in oklab, var(--primary) 8%, transparent),
+      transparent 70%
+    );
+  mask-image: radial-gradient(closest-side, black 55%, transparent);
+}
+.hero-signal-label {
+  opacity: var(--shown, 0);
+  width: max-content;
+  max-width: 11rem;
+  border: 1px solid var(--surface-dark-border);
+  background: color-mix(in oklab, var(--surface-dark) 88%, transparent);
+  padding: 0.45rem 0.6rem;
+  backdrop-filter: blur(8px);
+  will-change: opacity, transform;
+}
+@media (max-width: 639px) {
+  /* Small stage: show only the newest label so they never overlap. */
+  .hero-signal-label {
+    opacity: calc(var(--shown, 0) * (1 - var(--past, 0)));
+  }
+}
+@media (min-width: 640px) {
+  .hero-signal-label {
+    padding: 0.6rem 0.8rem;
+  }
+}
+.hero-ops-panel {
+  left: 4%;
+  right: 4%;
+  top: 22%;
+  transform-origin: 92% 0%;
+  border: 1px solid var(--surface-dark-border);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--surface-dark) 92%, var(--glow) 8%),
+    color-mix(in oklab, var(--surface-dark) 97%, transparent)
+  );
+  box-shadow:
+    0 30px 60px -30px oklch(0 0 0 / 0.7),
+    0 0 0 1px color-mix(in oklab, var(--glow) 10%, transparent) inset;
+  backdrop-filter: blur(10px);
+  will-change: opacity, transform;
+}
+@media (min-width: 640px) {
+  .hero-ops-panel {
+    left: 24%;
+    right: 7%;
+    top: 30%;
+  }
+}
+.beacon-emit {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: beacon-emit 3.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+.beacon-emit-late {
+  animation-delay: 1.8s;
+}
+@keyframes beacon-emit {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+.hero-skip {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 20;
+  transform: translateY(-200%);
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.hero-skip:focus-visible {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* A complete, composed state with no scroll distance to travel. */
+  .hero-track {
+    height: auto;
+  }
+  .hero-sticky,
+  .hero-copy {
+    position: relative;
+    top: 0;
+  }
+  .beacon-emit,
+  .beacon-pulse {
+    animation: none;
+  }
+}
