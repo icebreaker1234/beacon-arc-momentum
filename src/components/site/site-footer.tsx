@@ -7,7 +7,7 @@ export function SiteFooter() {
     <footer className="border-t border-border bg-surface-dark text-surface-dark-foreground">
       <div className="site-container grid gap-12 py-16 md:grid-cols-[1.6fr_1fr_1fr] md:py-20">
         <div>
-          <BrandMark />
+          <BrandMark inverse />
           <p className="mt-5 max-w-sm text-sm leading-7 text-surface-dark-muted">Useful software, thoughtful automation, and practical AI for growing businesses.</p>
           <p className="mt-8 text-xs uppercase tracking-widest text-surface-dark-muted">Contact details available on request</p>
         </div>
