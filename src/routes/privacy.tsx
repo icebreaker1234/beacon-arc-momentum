@@ -31,12 +31,14 @@ function Privacy() {
       <article className="site-container max-w-3xl py-20">
         <Legal title="Information you provide">
           The enquiry form asks for your name, work email, company, project context, optional budget
-          range, and preferred contact method. At present, no delivery service is connected and
-          submitted information is not sent or stored.
+          range, and preferred contact method. If no form delivery service is connected, the form
+          only checks your details in your browser and nothing is sent or stored. Once a provider is
+          connected, this section should name it and explain how long enquiries are kept.
         </Legal>
         <Legal title="Browser preferences">
-          If you enable the optional hero sound, the site stores that preference in your current
-          browser session. It is used only to remember the control state during your visit.
+          If you turn the optional hero sound on or off, the site remembers that choice in this
+          browser’s local storage under a single key. It is not sent anywhere, and clearing your
+          site data removes it. Sound never starts without you pressing the sound control.
         </Legal>
         <Legal title="Analytics and third parties">
           No analytics, advertising trackers, or third-party form processors are currently

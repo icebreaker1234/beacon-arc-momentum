@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute } from "@tanstack/react-router";
-import { AlertCircle, ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { AlertCircle, ArrowRight, CheckCircle2, Info, Loader2 } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,16 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PageIntro } from "@/components/site/page-intro";
+import { budgetOptions, contactEndpoint, contactMethods, site } from "@/config/site";
+import { enquirySchema, submitEnquiry, type Enquiry, type SubmitResult } from "@/lib/contact";
 
-const schema = z.object({
-  name: z.string().trim().min(2, "Please enter your name.").max(100),
-  email: z.string().trim().email("Enter a valid work email.").max(255),
-  company: z.string().trim().max(150).optional(),
-  message: z.string().trim().min(20, "Tell us a little more so we can prepare.").max(2000),
-  budget: z.string().max(50).optional(),
-  contactMethod: z.string().min(1, "Choose how you would like us to reply."),
-});
-type FormValues = z.infer<typeof schema>;
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
@@ -43,15 +35,35 @@ export const Route = createFileRoute("/contact")({
   }),
   component: ContactPage,
 });
+
+const EMPTY: Enquiry = {
+  name: "",
+  email: "",
+  company: "",
+  message: "",
+  budget: "",
+  contactMethod: "",
+  website: "",
+};
+
 function ContactPage() {
-  const [notice, setNotice] = useState(false);
+  const configured = contactEndpoint.length > 0;
+  const [result, setResult] = useState<SubmitResult | null>(null);
   const {
     register,
+    control,
     handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
-  const submit = () => setNotice(true);
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<Enquiry>({ resolver: zodResolver(enquirySchema), defaultValues: EMPTY });
+
+  const submit = async (values: Enquiry) => {
+    setResult(null);
+    const outcome = await submitEnquiry(values, contactEndpoint);
+    setResult(outcome);
+    if (outcome.status === "sent") reset(EMPTY);
+  };
+
   return (
     <>
       <PageIntro eyebrow="Let’s talk" title="Start with one process you want to improve.">
@@ -66,9 +78,9 @@ function ContactPage() {
             <p className="eyebrow">What happens next</p>
             <ol className="mt-7 space-y-7">
               {[
-                ["01", "We read the context"],
-                ["02", "We identify a useful first conversation"],
-                ["03", "We agree the right next step"],
+                ["01", "We read the context you share"],
+                ["02", "We suggest a useful first conversation"],
+                ["03", "We agree the right next step — which may be a small one"],
               ].map(([n, t]) => (
                 <li key={n} className="flex gap-5 border-t border-border pt-5">
                   <span className="text-xs text-primary">{n}</span>
@@ -76,11 +88,38 @@ function ContactPage() {
                 </li>
               ))}
             </ol>
-            <p className="mt-10 text-sm leading-6 text-muted-foreground">
-              No contact details have been published yet. This form is ready for a delivery service
-              to be connected.
-            </p>
+            <div className="mt-10 space-y-2 text-sm leading-6 text-muted-foreground">
+              {site.contactEmail && (
+                <p>
+                  Email:{" "}
+                  <a
+                    className="text-foreground underline-offset-4 hover:underline"
+                    href={`mailto:${site.contactEmail}`}
+                  >
+                    {site.contactEmail}
+                  </a>
+                </p>
+              )}
+              {site.contactPhone && (
+                <p>
+                  Phone:{" "}
+                  <a
+                    className="text-foreground underline-offset-4 hover:underline"
+                    href={`tel:${site.contactPhone.replace(/\s/g, "")}`}
+                  >
+                    {site.contactPhone}
+                  </a>
+                </p>
+              )}
+              {!configured && (
+                <p>
+                  The online form is not connected to a delivery service yet, so it can check your
+                  details but cannot send them.
+                </p>
+              )}
+            </div>
           </aside>
+
           <form
             noValidate
             onSubmit={handleSubmit(submit)}
@@ -94,6 +133,8 @@ function ContactPage() {
                   autoComplete="name"
                   maxLength={100}
                   className="h-12"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                   {...register("name")}
                 />
               </Field>
@@ -104,6 +145,8 @@ function ContactPage() {
                   autoComplete="email"
                   maxLength={255}
                   className="h-12"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                   {...register("email")}
                 />
               </Field>
@@ -118,7 +161,7 @@ function ContactPage() {
               />
             </Field>
             <Field
-              label="What would you like to improve?"
+              label="What problem would you like to solve?"
               id="message"
               error={errors.message?.message}
             >
@@ -127,62 +170,92 @@ function ContactPage() {
                 rows={7}
                 maxLength={2000}
                 placeholder="Describe the process, who it affects, and what better would look like."
+                aria-invalid={!!errors.message}
+                aria-describedby={errors.message ? "message-error" : undefined}
                 {...register("message")}
               />
             </Field>
             <div className="grid gap-6 sm:grid-cols-2">
-              <Field label="Budget range (optional)" id="budget">
-                <Select onValueChange={(v) => setValue("budget", v)}>
-                  <SelectTrigger id="budget" className="h-12">
-                    <SelectValue placeholder="Select a range" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="exploring">Still exploring</SelectItem>
-                    <SelectItem value="under-10k">Under £10,000</SelectItem>
-                    <SelectItem value="10-25k">£10,000–£25,000</SelectItem>
-                    <SelectItem value="25-50k">£25,000–£50,000</SelectItem>
-                    <SelectItem value="50k-plus">£50,000+</SelectItem>
-                  </SelectContent>
-                </Select>
+              <Field label="Budget (optional)" id="budget">
+                <Controller
+                  control={control}
+                  name="budget"
+                  render={({ field }) => (
+                    <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                      <SelectTrigger ref={field.ref} id="budget" className="h-12 w-full">
+                        <SelectValue placeholder="Select a range" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {budgetOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </Field>
               <Field
                 label="Preferred contact method"
                 id="contactMethod"
                 error={errors.contactMethod?.message}
               >
-                <Select
-                  onValueChange={(v) => setValue("contactMethod", v, { shouldValidate: true })}
-                >
-                  <SelectTrigger id="contactMethod" className="h-12">
-                    <SelectValue placeholder="Choose one" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="email">Email</SelectItem>
-                    <SelectItem value="video">Video call</SelectItem>
-                    <SelectItem value="phone">Phone</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  control={control}
+                  name="contactMethod"
+                  render={({ field }) => (
+                    <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                      <SelectTrigger
+                        ref={field.ref}
+                        id="contactMethod"
+                        className="h-12 w-full"
+                        aria-invalid={!!errors.contactMethod}
+                        aria-describedby={errors.contactMethod ? "contactMethod-error" : undefined}
+                      >
+                        <SelectValue placeholder="Choose one" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {contactMethods.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </Field>
             </div>
-            {notice && (
-              <div
-                role="status"
-                className="flex gap-3 border border-primary/40 bg-accent p-4 text-sm leading-6"
-              >
-                <AlertCircle className="mt-0.5 size-4 shrink-0 text-primary" />
-                <span>
-                  Your details are valid, but the delivery service is not connected yet, so nothing
-                  was sent. Once a form provider is configured, this will submit securely.
-                </span>
-              </div>
-            )}
+
+            {/* Honeypot for simple bots; hidden from people and assistive tech. */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="website">Leave this field empty</label>
+              <input id="website" tabIndex={-1} autoComplete="off" {...register("website")} />
+            </div>
+
+            <div aria-live="polite">{result && <ResultNotice result={result} />}</div>
+
             <div>
-              <Button type="submit" size="lg">
-                Review enquiry <ArrowRight />
+              <Button type="submit" size="lg" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin" aria-hidden="true" /> Sending…
+                  </>
+                ) : configured ? (
+                  <>
+                    Send enquiry <ArrowRight />
+                  </>
+                ) : (
+                  <>
+                    Check my details <ArrowRight />
+                  </>
+                )}
               </Button>
               <p className="mt-3 text-xs text-muted-foreground">
-                Submitting currently validates your message only; it does not send or store your
-                details.
+                {configured
+                  ? "We use these details only to reply to your enquiry. See our privacy policy."
+                  : "Form delivery is not set up yet: this checks your details but does not send or store them."}
               </p>
             </div>
           </form>
@@ -191,6 +264,70 @@ function ContactPage() {
     </>
   );
 }
+
+function ResultNotice({ result }: { result: SubmitResult }) {
+  if (result.status === "sent") {
+    return (
+      <div
+        role="status"
+        className="flex gap-3 border border-primary/40 bg-accent p-4 text-sm leading-6"
+      >
+        <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+        <span>
+          Thank you — your enquiry was sent. We’ll reply using your preferred contact method.
+        </span>
+      </div>
+    );
+  }
+  if (result.status === "error") {
+    return (
+      <div
+        role="alert"
+        className="flex gap-3 border border-destructive/50 bg-destructive/5 p-4 text-sm leading-6"
+      >
+        <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" aria-hidden="true" />
+        <span>
+          {result.message}
+          {site.contactEmail && (
+            <>
+              {" "}
+              You can also email{" "}
+              <a className="underline" href={`mailto:${site.contactEmail}`}>
+                {site.contactEmail}
+              </a>
+              .
+            </>
+          )}
+        </span>
+      </div>
+    );
+  }
+  return (
+    <div
+      role="status"
+      className="flex gap-3 border border-border bg-secondary p-4 text-sm leading-6"
+    >
+      <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+      <span>
+        Your details look complete, but <strong>nothing was sent</strong>: the form’s delivery
+        service hasn’t been connected yet.
+        {site.contactEmail ? (
+          <>
+            {" "}
+            Please email{" "}
+            <a className="underline" href={`mailto:${site.contactEmail}`}>
+              {site.contactEmail}
+            </a>{" "}
+            instead.
+          </>
+        ) : (
+          " Please check back soon."
+        )}
+      </span>
+    </div>
+  );
+}
+
 function Field({
   label,
   id,
@@ -200,14 +337,14 @@ function Field({
   label: string;
   id: string;
   error?: string | undefined;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div className="grid gap-2">
       <Label htmlFor={id}>{label}</Label>
       {children}
       {error && (
-        <p className="text-sm text-destructive" role="alert">
+        <p id={`${id}-error`} className="text-sm text-destructive">
           {error}
         </p>
       )}

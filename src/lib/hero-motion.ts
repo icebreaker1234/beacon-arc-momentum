@@ -13,7 +13,7 @@ export const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
 export const range = (value: number, start: number, end: number) =>
   clamp01((value - start) / (end - start));
 
-export const easeInOutSine = (t: number) => -(Math.cos(Math.PI * clamp01(t)) - 1) / 2;
+export const easeInOutSine = (t: number) => (1 - Math.cos(Math.PI * clamp01(t))) / 2;
 export const easeOutCubic = (t: number) => 1 - (1 - clamp01(t)) ** 3;
 
 /** SVG coordinate space shared by the stage and the HTML overlays. */

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
+import { site } from "@/config/site";
 import { BrandMark } from "./brand-mark";
 
 export function SiteFooter() {
@@ -11,9 +12,28 @@ export function SiteFooter() {
           <p className="mt-5 max-w-sm text-sm leading-7 text-surface-dark-muted">
             Useful software, thoughtful automation, and practical AI for growing businesses.
           </p>
-          <p className="mt-8 text-xs uppercase tracking-widest text-surface-dark-muted">
-            Contact details available on request
-          </p>
+          {site.contactEmail || site.contactPhone || site.location ? (
+            <div className="mt-8 grid gap-1 text-sm text-surface-dark-muted">
+              {site.contactEmail && (
+                <a href={`mailto:${site.contactEmail}`} className="footer-link w-fit">
+                  {site.contactEmail}
+                </a>
+              )}
+              {site.contactPhone && (
+                <a
+                  href={`tel:${site.contactPhone.replace(/\s/g, "")}`}
+                  className="footer-link w-fit"
+                >
+                  {site.contactPhone}
+                </a>
+              )}
+              {site.location && <span>{site.location}</span>}
+            </div>
+          ) : (
+            <p className="mt-8 text-xs uppercase tracking-widest text-surface-dark-muted">
+              Contact details available on request
+            </p>
+          )}
         </div>
         <div>
           <p className="footer-label">Navigate</p>

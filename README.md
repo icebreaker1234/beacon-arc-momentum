@@ -162,3 +162,39 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+Checks: `npm run build`, `npm run lint`, `npm run test`.
+
+## Contact form setup
+
+The contact form validates in the browser and **only reports success when a real delivery
+service accepts the submission**. Until one is configured it tells the visitor plainly that
+nothing was sent.
+
+1. Create a form endpoint with a provider that accepts JSON posts and returns a 2xx response
+   on success (for example Formspree, Basin, Getform, or your own API route).
+2. Set the endpoint as an environment variable:
+   - Locally: create `.env.local` with
+     `VITE_CONTACT_ENDPOINT=https://your-provider.example/f/your-form-id`
+   - In Lovable or your host: add the same variable in the project's environment settings,
+     then rebuild.
+3. The form posts JSON with `name`, `email`, `company`, `message`, `budget`, `contactMethod`
+   and `source: "beacon-arc-website"`. A hidden honeypot field filters simple bots.
+4. Update the privacy policy (`src/routes/privacy.tsx`) to name the provider, what it stores,
+   and how long enquiries are kept.
+
+Public contact details are placeholders in `src/config/site.ts` (`contactEmail`,
+`contactPhone`, `location`). Empty values are hidden; filled values appear on the contact page
+and in the footer, and the email is offered as a fallback if sending fails.
+
+## Hero motion notes
+
+- `src/components/site/hero-chapter.tsx` — the tall hero section with a sticky stage.
+- `src/components/visuals/hero-signal-stage.tsx` — the hero-only animated scene.
+- `src/lib/hero-motion.ts` — timing windows and arc geometry (tune stage timing in `TIMELINE`).
+- `src/hooks/use-scroll-progress.ts` — passive scroll + `requestAnimationFrame` progress (0–1).
+- `src/components/visuals/workflow-visual.tsx` — the static graphic reused in later sections.
+
+With `prefers-reduced-motion`, the hero renders its complete final state with no extra scroll
+distance. The optional sound starts only from the Sound control; a remembered "on" choice shows
+as "Resume sound" and still needs a click.

@@ -29,25 +29,43 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const services = [
-  ["01", "Custom business software", "Tools shaped around the way your team actually works."],
+const services: [string, string, string, string][] = [
+  [
+    "01",
+    "custom-software",
+    "Custom business software",
+    "Tools shaped around the way your team actually works.",
+  ],
   [
     "02",
+    "websites",
     "Websites & digital products",
     "Clear digital experiences that help customers take the next step.",
   ],
-  ["03", "Workflow automation", "Reliable handoffs between people, systems, and routine tasks."],
+  [
+    "03",
+    "automation",
+    "Workflow automation",
+    "Reliable handoffs between people, systems, and routine tasks.",
+  ],
   [
     "04",
+    "ai",
     "Practical AI solutions",
     "Focused assistants and document workflows inside real operations.",
   ],
   [
     "05",
+    "dashboards",
     "Dashboards & data systems",
     "A clearer view of what is happening and what needs attention.",
   ],
-  ["06", "Integrations & cloud systems", "Connected tools with a secure, maintainable foundation."],
+  [
+    "06",
+    "integrations",
+    "Integrations & cloud systems",
+    "Connected tools with a secure, maintainable foundation.",
+  ],
 ];
 const friction = [
   ["Repetitive work", "The same details typed into a form, a spreadsheet and an email."],
@@ -147,10 +165,11 @@ function Index() {
             </Button>
           </div>
           <div className="mt-14 grid border-t border-border md:grid-cols-2">
-            {services.map(([n, t, c]) => (
+            {services.map(([n, hash, t, c]) => (
               <Link
                 key={t}
                 to="/services"
+                hash={hash}
                 className="group border-b border-border py-7 md:odd:pr-10 md:even:border-l md:even:pl-10"
               >
                 <div className="flex gap-5">

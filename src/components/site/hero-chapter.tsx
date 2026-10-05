@@ -61,8 +61,8 @@ export function HeroChapter({ nextId }: { nextId: string }) {
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-surface-dark-muted sm:mt-6 sm:text-lg sm:leading-8">
               We turn time-consuming processes and disconnected tools into useful software,
-              automation, and AI workflows — so your team can spend less time fighting its tools
-              and more time moving the business forward.
+              automation, and AI workflows — so your team can spend less time fighting its tools and
+              more time moving the business forward.
             </p>
             <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
               <Button asChild size="lg">

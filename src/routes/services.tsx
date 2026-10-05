@@ -28,6 +28,7 @@ export const Route = createFileRoute("/services")({
 const services = [
   {
     n: "01",
+    id: "custom-software",
     title: "Custom business software",
     helps: "Teams whose day-to-day work no longer fits spreadsheets or off-the-shelf tools.",
     problem:
@@ -39,6 +40,7 @@ const services = [
   },
   {
     n: "02",
+    id: "websites",
     title: "Websites and digital products",
     helps: "Businesses that need a clearer digital front door or a better customer experience.",
     problem:
@@ -50,6 +52,7 @@ const services = [
   },
   {
     n: "03",
+    id: "automation",
     title: "Workflow automation",
     helps: "Teams spending valuable hours moving information and chasing routine follow-ups.",
     problem:
@@ -61,7 +64,8 @@ const services = [
   },
   {
     n: "04",
-    title: "AI solutions",
+    id: "ai",
+    title: "Practical AI solutions",
     helps: "Teams with document-heavy, knowledge-heavy, or repetitive information work.",
     problem: "Useful information is difficult to find, review, summarise, or apply consistently.",
     deliver:
@@ -71,6 +75,7 @@ const services = [
   },
   {
     n: "05",
+    id: "dashboards",
     title: "Dashboards and data systems",
     helps: "Owners and operators who need a reliable view of activity, performance, or exceptions.",
     problem:
@@ -80,6 +85,7 @@ const services = [
   },
   {
     n: "06",
+    id: "integrations",
     title: "Integrations and cloud systems",
     helps: "Businesses with growing platforms that need to share data safely and reliably.",
     problem:
@@ -106,7 +112,8 @@ function ServicesPage() {
           {services.map((s) => (
             <article
               key={s.title}
-              className="grid gap-8 border-b border-border py-14 lg:grid-cols-[.6fr_1.4fr]"
+              id={s.id}
+              className="scroll-mt-24 grid gap-8 border-b border-border py-14 lg:grid-cols-[.6fr_1.4fr]"
             >
               <div>
                 <span className="text-xs text-primary">{s.n}</span>
