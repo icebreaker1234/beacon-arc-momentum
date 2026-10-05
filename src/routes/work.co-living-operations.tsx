@@ -4,6 +4,139 @@ import { PageIntro } from "@/components/site/page-intro";
 import { WorkflowVisual } from "@/components/visuals/workflow-visual";
 import { Callout } from "@/components/site/callout";
 
-export const Route=createFileRoute("/work/co-living-operations")({head:()=>({meta:[{title:"Co-living Operations Concept — Beacon Arc"},{name:"description",content:"A Beacon Arc product concept for managing residents, rooms, rent, expenses, and website availability."},{property:"og:title",content:"Co-living Operations Concept — Beacon Arc"},{property:"og:description",content:"A transparent product concept exploring a clearer operating system for shared living."},{property:"og:type",content:"article"},{name:"twitter:card",content:"summary_large_image"}]}),component:CaseStudy});
-function CaseStudy(){return <><PageIntro eyebrow="Product concept · Not a live deployment" title="A clearer operating system for shared living."><p>This concept explores how a co-living or hostel operator could replace scattered records with one dependable view of residents, rooms, money, and availability.</p></PageIntro><section className="py-16"><div className="site-container"><Link to="/work" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"><ArrowLeft className="size-4"/>All work</Link><div className="mt-10"><WorkflowVisual/></div></div></section><section className="border-y border-border bg-secondary/45 py-20"><div className="site-container grid gap-12 md:grid-cols-3"><Block title="Business context">Shared-living operators coordinate changing residents, rooms, rent, expenses, and website enquiries. When each lives elsewhere, the full picture is hard to trust.</Block><Block title="Challenge">A room can look available online while an internal sheet says otherwise. Payment follow-ups and expenses can depend on manual checks across multiple files.</Block><Block title="Design question">How might one focused system give staff a reliable operating view while keeping public room availability current?</Block></div></section><section className="py-24"><div className="site-container grid gap-16 lg:grid-cols-[.72fr_1.28fr]"><div><p className="eyebrow">Proposed solution</p><h2 className="mt-4 font-display text-4xl font-medium">One source of operational truth.</h2></div><div className="grid gap-6 sm:grid-cols-2">{["Resident profiles with contact and stay details","Live room occupancy and upcoming changes","Rent tracking with visible follow-up status","Expense records grouped for review","Controlled publishing of room availability","Simple dashboards for everyday decisions"].map(x=><div key={x} className="flex gap-3 border-t border-border pt-5"><Check className="mt-1 size-4 shrink-0 text-primary"/><p className="leading-7 text-muted-foreground">{x}</p></div>)}</div></div></section><section className="bg-surface-dark py-24 text-surface-dark-foreground"><div className="site-container grid gap-12 md:grid-cols-2"><div><p className="eyebrow">Outcome status</p><h2 className="mt-4 font-display text-4xl font-medium">Concept outcomes, not claimed results.</h2><p className="mt-5 leading-7 text-surface-dark-muted">This is a product concept, not evidence of a live client deployment. No savings, adoption, or performance results are claimed.</p></div><div><p className="text-xs font-semibold uppercase tracking-widest text-primary">What a pilot should verify</p><ul className="mt-5 space-y-4 text-surface-dark-muted">{["Whether staff can complete core tasks without parallel spreadsheets","Whether room status stays consistent between operations and the website","Whether payment and expense exceptions are easier to spot","Whether ownership and access controls suit the team"].map(x=><li key={x} className="border-b border-surface-dark-border pb-4">{x}</li>)}</ul><p className="mt-8 text-xs text-surface-dark-muted">Potential implementation: modern web application, relational data store, secure role-based access, and website publishing integration. Final technologies would follow discovery.</p></div></div></section><Callout/></>}
-function Block({title,children}:{title:string;children:string}){return <div><h2 className="font-display text-2xl font-medium">{title}</h2><p className="mt-4 leading-7 text-muted-foreground">{children}</p></div>}
+export const Route = createFileRoute("/work/co-living-operations")({
+  head: () => ({
+    meta: [
+      { title: "Co-living Operations Concept — Beacon Arc" },
+      {
+        name: "description",
+        content:
+          "A Beacon Arc product concept for managing residents, rooms, rent, expenses, and website availability.",
+      },
+      { property: "og:title", content: "Co-living Operations Concept — Beacon Arc" },
+      {
+        property: "og:description",
+        content:
+          "A transparent product concept exploring a clearer operating system for shared living.",
+      },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: CaseStudy,
+});
+function CaseStudy() {
+  return (
+    <>
+      <PageIntro
+        eyebrow="Product concept · Not a live deployment"
+        title="A clearer operating system for shared living."
+      >
+        <p>
+          This concept explores how a co-living or hostel operator could replace scattered records
+          with one dependable view of residents, rooms, money, and availability.
+        </p>
+      </PageIntro>
+      <section className="py-16">
+        <div className="site-container">
+          <Link
+            to="/work"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
+          >
+            <ArrowLeft className="size-4" />
+            All work
+          </Link>
+          <div className="mt-10">
+            <WorkflowVisual />
+          </div>
+        </div>
+      </section>
+      <section className="border-y border-border bg-secondary/45 py-20">
+        <div className="site-container grid gap-12 md:grid-cols-3">
+          <Block title="Business context">
+            Shared-living operators coordinate changing residents, rooms, rent, expenses, and
+            website enquiries. When each lives elsewhere, the full picture is hard to trust.
+          </Block>
+          <Block title="Challenge">
+            A room can look available online while an internal sheet says otherwise. Payment
+            follow-ups and expenses can depend on manual checks across multiple files.
+          </Block>
+          <Block title="Design question">
+            How might one focused system give staff a reliable operating view while keeping public
+            room availability current?
+          </Block>
+        </div>
+      </section>
+      <section className="py-24">
+        <div className="site-container grid gap-16 lg:grid-cols-[.72fr_1.28fr]">
+          <div>
+            <p className="eyebrow">Proposed solution</p>
+            <h2 className="mt-4 font-display text-4xl font-medium">
+              One source of operational truth.
+            </h2>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {[
+              "Resident profiles with contact and stay details",
+              "Live room occupancy and upcoming changes",
+              "Rent tracking with visible follow-up status",
+              "Expense records grouped for review",
+              "Controlled publishing of room availability",
+              "Simple dashboards for everyday decisions",
+            ].map((x) => (
+              <div key={x} className="flex gap-3 border-t border-border pt-5">
+                <Check className="mt-1 size-4 shrink-0 text-primary" />
+                <p className="leading-7 text-muted-foreground">{x}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="bg-surface-dark py-24 text-surface-dark-foreground">
+        <div className="site-container grid gap-12 md:grid-cols-2">
+          <div>
+            <p className="eyebrow">Outcome status</p>
+            <h2 className="mt-4 font-display text-4xl font-medium">
+              Concept outcomes, not claimed results.
+            </h2>
+            <p className="mt-5 leading-7 text-surface-dark-muted">
+              This is a product concept, not evidence of a live client deployment. No savings,
+              adoption, or performance results are claimed.
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+              What a pilot should verify
+            </p>
+            <ul className="mt-5 space-y-4 text-surface-dark-muted">
+              {[
+                "Whether staff can complete core tasks without parallel spreadsheets",
+                "Whether room status stays consistent between operations and the website",
+                "Whether payment and expense exceptions are easier to spot",
+                "Whether ownership and access controls suit the team",
+              ].map((x) => (
+                <li key={x} className="border-b border-surface-dark-border pb-4">
+                  {x}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 text-xs text-surface-dark-muted">
+              Potential implementation: modern web application, relational data store, secure
+              role-based access, and website publishing integration. Final technologies would follow
+              discovery.
+            </p>
+          </div>
+        </div>
+      </section>
+      <Callout />
+    </>
+  );
+}
+function Block({ title, children }: { title: string; children: string }) {
+  return (
+    <div>
+      <h2 className="font-display text-2xl font-medium">{title}</h2>
+      <p className="mt-4 leading-7 text-muted-foreground">{children}</p>
+    </div>
+  );
+}

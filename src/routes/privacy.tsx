@@ -1,5 +1,64 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageIntro } from "@/components/site/page-intro";
-export const Route=createFileRoute("/privacy")({head:()=>({meta:[{title:"Privacy Policy — Beacon Arc"},{name:"description",content:"How Beacon Arc handles information shared through this website."},{property:"og:title",content:"Privacy Policy — Beacon Arc"},{property:"og:description",content:"How information is handled on the Beacon Arc website."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:Privacy});
-function Privacy(){return <><PageIntro eyebrow="Information" title="Privacy policy"><p>A plain-language starting point for how this website handles information. This policy should be reviewed before launch with final business and service details.</p></PageIntro><article className="site-container max-w-3xl py-20"><Legal title="Information you provide">The enquiry form asks for your name, work email, company, project context, optional budget range, and preferred contact method. At present, no delivery service is connected and submitted information is not sent or stored.</Legal><Legal title="Browser preferences">If you enable the optional hero sound, the site stores that preference in your current browser session. It is used only to remember the control state during your visit.</Legal><Legal title="Analytics and third parties">No analytics, advertising trackers, or third-party form processors are currently configured in this version of the site.</Legal><Legal title="Your choices">You can use the website with sound off and without submitting information. Once a contact service is connected, this policy should name the provider, retention period, purpose, and contact method for privacy requests.</Legal><p className="mt-12 text-xs text-muted-foreground">Last updated: October 2026 · Draft pending final business and service details.</p></article></>}
-function Legal({title,children}:{title:string;children:string}){return <section className="border-t border-border py-8"><h2 className="font-display text-2xl font-medium">{title}</h2><p className="mt-4 leading-7 text-muted-foreground">{children}</p></section>}
+export const Route = createFileRoute("/privacy")({
+  head: () => ({
+    meta: [
+      { title: "Privacy Policy — Beacon Arc" },
+      {
+        name: "description",
+        content: "How Beacon Arc handles information shared through this website.",
+      },
+      { property: "og:title", content: "Privacy Policy — Beacon Arc" },
+      {
+        property: "og:description",
+        content: "How information is handled on the Beacon Arc website.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Privacy,
+});
+function Privacy() {
+  return (
+    <>
+      <PageIntro eyebrow="Information" title="Privacy policy">
+        <p>
+          A plain-language starting point for how this website handles information. This policy
+          should be reviewed before launch with final business and service details.
+        </p>
+      </PageIntro>
+      <article className="site-container max-w-3xl py-20">
+        <Legal title="Information you provide">
+          The enquiry form asks for your name, work email, company, project context, optional budget
+          range, and preferred contact method. At present, no delivery service is connected and
+          submitted information is not sent or stored.
+        </Legal>
+        <Legal title="Browser preferences">
+          If you enable the optional hero sound, the site stores that preference in your current
+          browser session. It is used only to remember the control state during your visit.
+        </Legal>
+        <Legal title="Analytics and third parties">
+          No analytics, advertising trackers, or third-party form processors are currently
+          configured in this version of the site.
+        </Legal>
+        <Legal title="Your choices">
+          You can use the website with sound off and without submitting information. Once a contact
+          service is connected, this policy should name the provider, retention period, purpose, and
+          contact method for privacy requests.
+        </Legal>
+        <p className="mt-12 text-xs text-muted-foreground">
+          Last updated: October 2026 · Draft pending final business and service details.
+        </p>
+      </article>
+    </>
+  );
+}
+function Legal({ title, children }: { title: string; children: string }) {
+  return (
+    <section className="border-t border-border py-8">
+      <h2 className="font-display text-2xl font-medium">{title}</h2>
+      <p className="mt-4 leading-7 text-muted-foreground">{children}</p>
+    </section>
+  );
+}

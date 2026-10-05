@@ -160,26 +160,116 @@
     background: color-mix(in oklab, var(--primary) 35%, transparent);
   }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
 
-  :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-@utility site-container { width: min(100% - 2.5rem, 76rem); margin-inline: auto; }
-@utility eyebrow { font-size: 0.72rem; line-height: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--primary); }
-@utility nav-link { color: var(--muted-foreground); font-size: 0.875rem; font-weight: 500; transition: color 180ms ease; &:hover { color: var(--foreground); } }
-@utility footer-label { font-size: 0.7rem; line-height: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--surface-dark-muted); }
-@utility footer-link { color: var(--surface-dark-foreground); transition: color 180ms ease; &:hover { color: var(--primary); } }
-@utility fine-grid { background-image: linear-gradient(to right, color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px); background-size: 4rem 4rem; }
-@utility arc-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-arc 2.2s cubic-bezier(.2,.75,.25,1) 0.25s forwards; }
-@utility rise { animation: rise-in 700ms cubic-bezier(.2,.75,.25,1) both; }
-@utility beacon-pulse { transform-box: fill-box; transform-origin: center; animation: beacon-pulse 2.4s ease-in-out infinite; }
+@utility site-container {
+  width: min(100% - 2.5rem, 76rem);
+  margin-inline: auto;
+}
+@utility eyebrow {
+  font-size: 0.72rem;
+  line-height: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--primary);
+}
+@utility nav-link {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 180ms ease;
+  &:hover {
+    color: var(--foreground);
+  }
+}
+@utility footer-label {
+  font-size: 0.7rem;
+  line-height: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--surface-dark-muted);
+}
+@utility footer-link {
+  color: var(--surface-dark-foreground);
+  transition: color 180ms ease;
+  &:hover {
+    color: var(--primary);
+  }
+}
+@utility fine-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--border) 45%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--border) 45%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 4rem 4rem;
+}
+@utility arc-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw-arc 2.2s cubic-bezier(0.2, 0.75, 0.25, 1) 0.25s forwards;
+}
+@utility rise {
+  animation: rise-in 700ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+@utility beacon-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: beacon-pulse 2.4s ease-in-out infinite;
+}
 
-@keyframes draw-arc { to { stroke-dashoffset: 0; } }
-@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes beacon-pulse { 0%, 100% { opacity: .45; transform: scale(.82); } 50% { opacity: .9; transform: scale(1.18); } }
+@keyframes draw-arc {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes beacon-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.18);
+  }
+}
