@@ -25,6 +25,12 @@ const services = [
   ["05", "Dashboards & data systems", "A clearer view of what is happening and what needs attention."],
   ["06", "Integrations & cloud systems", "Connected tools with a secure, maintainable foundation."],
 ];
+const trustItems = [
+  { icon: Layers, title: "Maintainable by design", copy: "Sensible foundations instead of needless complexity." },
+  { icon: Link2, title: "Clear ownership", copy: "Documentation, access, and decisions stay visible." },
+  { icon: Repeat2, title: "Transparent recommendations", copy: "We explain trade-offs and say when simpler is better." },
+  { icon: Sparkles, title: "Security-minded delivery", copy: "Careful access, data handling, and dependable implementation." },
+];
 function Index() {
   const heroRef = useRef<HTMLElement>(null);
   return <>
@@ -51,7 +57,7 @@ function Index() {
 
     <section className="py-24 md:py-32"><div className="site-container"><SectionHeading eyebrow="How we work" title="A steady path from problem to useful system."/><div className="mt-16 grid gap-px bg-border md:grid-cols-4">{[["Discover","Understand the work, constraints, users, and what success needs to mean."],["Design","Make scope tangible with flows, prototypes, and clear technical choices."],["Build","Deliver in visible stages, with regular feedback and no black box."],["Improve","Launch carefully, document ownership, and refine from real use."]].map(([t,c],i)=><div key={t} className="bg-background p-7"><span className="text-xs text-primary">0{i+1}</span><h3 className="mt-10 font-display text-2xl font-medium">{t}</h3><p className="mt-4 text-sm leading-6 text-muted-foreground">{c}</p></div>)}</div></div></section>
 
-    <section className="border-t border-border bg-secondary/45 py-24"><div className="site-container grid gap-12 lg:grid-cols-[.72fr_1.28fr]"><SectionHeading eyebrow="Built for trust" title="Clear advice. Clean handover."/><div className="grid gap-8 sm:grid-cols-2">{[[Layers,"Maintainable by design","Sensible foundations instead of needless complexity."],[Link2,"Clear ownership","Documentation, access, and decisions stay visible."],[Repeat2,"Transparent recommendations","We explain trade-offs and say when simpler is better."],[Sparkles,"Security-minded delivery","Careful access, data handling, and dependable implementation."]].map(([Icon,t,c])=><div key={String(t)}><Icon className="size-5 text-primary"/><h3 className="mt-4 font-display text-xl font-medium">{String(t)}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{String(c)}</p></div>)}</div></div></section>
+    <section className="border-t border-border bg-secondary/45 py-24"><div className="site-container grid gap-12 lg:grid-cols-[.72fr_1.28fr]"><SectionHeading eyebrow="Built for trust" title="Clear advice. Clean handover."/><div className="grid gap-8 sm:grid-cols-2">{trustItems.map(({ icon: Icon, title, copy })=><div key={title}><Icon className="size-5 text-primary"/><h3 className="mt-4 font-display text-xl font-medium">{title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{copy}</p></div>)}</div></div></section>
     <Callout/>
   </>;
 }
