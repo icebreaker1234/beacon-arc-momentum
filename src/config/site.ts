@@ -9,8 +9,8 @@ export const site: {
   location: string;
 } = {
   name: "Beacon Arc",
-  /** Public enquiry email, e.g. "hello@your-domain.com". */
-  contactEmail: "",
+  /** Public enquiry email. */
+  contactEmail: "team.beaconarc@gmail.com",
   /** Public phone number in international format, e.g. "+44 20 0000 0000". */
   contactPhone: "",
   /** Where you are based, if you want to say, e.g. "Remote-first · UK". */
@@ -18,11 +18,13 @@ export const site: {
 };
 
 /**
- * Form delivery endpoint. Set VITE_CONTACT_ENDPOINT in your environment
- * (see README → "Contact form setup"). Without it the form validates but
- * clearly tells the visitor that nothing was sent.
+ * Form delivery endpoint. Enquiries are delivered to the team inbox via
+ * FormSubmit's JSON endpoint. Override with VITE_CONTACT_ENDPOINT if the
+ * delivery service ever changes.
  */
-export const contactEndpoint: string = (import.meta.env.VITE_CONTACT_ENDPOINT ?? "").trim();
+export const contactEndpoint: string = (
+  import.meta.env.VITE_CONTACT_ENDPOINT ?? "https://formsubmit.co/ajax/team.beaconarc@gmail.com"
+).trim();
 
 export const budgetOptions = [
   { value: "exploring", label: "Still exploring" },
