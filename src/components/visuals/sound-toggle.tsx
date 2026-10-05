@@ -6,7 +6,11 @@ export function SoundToggle({ heroRef }: { heroRef: React.RefObject<HTMLElement 
   const [enabled, setEnabled] = useState(false);
   const [available, setAvailable] = useState(false);
   const audio = useRef<{ ctx: AudioContext; oscillator: OscillatorNode; gain: GainNode } | null>(null);
-  useEffect(() => { setAvailable(window.matchMedia("(pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
+  useEffect(() => {
+    const canPlay = window.matchMedia("(pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setAvailable(canPlay);
+    if (canPlay) { try { setEnabled(sessionStorage.getItem("beacon-arc-sound") === "true"); } catch {} }
+  }, []);
   useEffect(() => {
     if (!available || !enabled || !heroRef.current) return;
     const ctx = new AudioContext(); const oscillator = ctx.createOscillator(); const gain = ctx.createGain();

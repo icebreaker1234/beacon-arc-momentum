@@ -1,11 +1,11 @@
 # Beacon Arc roadmap
 
-- [ ] Shared navigation, footer, design system, and responsive shell
-- [ ] Homepage story and signature arc-to-interface sequence
-- [ ] Optional accessible ambient sound
-- [ ] Services page
-- [ ] Work listing and co-living concept case study
-- [ ] About page
-- [ ] Contact form with validation and honest delivery state
-- [ ] Privacy and terms pages
-- [ ] Metadata, accessibility, responsive, and interaction verification
+- [x] Shared navigation, footer, design system, and responsive shell
+- [x] Homepage story and signature arc-to-interface sequence
+- [x] Optional accessible ambient sound
+- [x] Services page
+- [x] Work listing and co-living concept case study
+- [x] About page
+- [x] Contact form with validation and honest delivery state
+- [x] Privacy and terms pages
+- [x] Metadata, accessibility, responsive, and interaction verification
