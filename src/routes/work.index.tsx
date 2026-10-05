@@ -4,7 +4,7 @@ import { PageIntro } from "@/components/site/page-intro";
 import { WorkflowVisual } from "@/components/visuals/workflow-visual";
 import { Callout } from "@/components/site/callout";
 
-export const Route = createFileRoute("/work")({
+export const Route = createFileRoute("/work/")({
   head: () => ({
     meta: [
       { title: "Work — Beacon Arc" },

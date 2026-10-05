@@ -14,4 +14,15 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("renders each content page as its own route, including the case study", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+    const leaf = (path: string) => router.matchRoutes(path).at(-1)?.routeId;
+
+    expect(leaf("/work")).toBe("/work/");
+    expect(leaf("/work/co-living-operations")).toBe("/work/co-living-operations");
+    for (const path of ["/services", "/about", "/contact", "/privacy", "/terms"]) {
+      expect(leaf(path)).toBe(path);
+    }
+  });
 });

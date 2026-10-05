@@ -15,7 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as WorkRouteImport } from './routes/work'
+import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkCoLivingOperationsRouteImport } from './routes/work.co-living-operations'
 
 const IndexRoute = IndexRouteImport.update({
@@ -48,15 +48,15 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkRoute = WorkRouteImport.update({
-  id: '/work',
-  path: '/work',
+const WorkIndexRoute = WorkIndexRouteImport.update({
+  id: '/work/',
+  path: '/work/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkCoLivingOperationsRoute = WorkCoLivingOperationsRouteImport.update({
-  id: '/co-living-operations',
-  path: '/co-living-operations',
-  getParentRoute: () => WorkRoute,
+  id: '/work/co-living-operations',
+  path: '/work/co-living-operations',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -66,8 +66,8 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
-  '/work': typeof WorkRouteWithChildren
   '/work/co-living-operations': typeof WorkCoLivingOperationsRoute
+  '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,8 +76,8 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
-  '/work': typeof WorkRouteWithChildren
   '/work/co-living-operations': typeof WorkCoLivingOperationsRoute
+  '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,8 +87,8 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
-  '/work': typeof WorkRouteWithChildren
   '/work/co-living-operations': typeof WorkCoLivingOperationsRoute
+  '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,8 +99,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/services'
     | '/terms'
-    | '/work'
     | '/work/co-living-operations'
+    | '/work/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,8 +109,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/services'
     | '/terms'
-    | '/work'
     | '/work/co-living-operations'
+    | '/work'
   id:
     | '__root__'
     | '/'
@@ -119,8 +119,8 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/services'
     | '/terms'
-    | '/work'
     | '/work/co-living-operations'
+    | '/work/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,7 +130,8 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ServicesRoute: typeof ServicesRoute
   TermsRoute: typeof TermsRoute
-  WorkRoute: typeof WorkRouteWithChildren
+  WorkCoLivingOperationsRoute: typeof WorkCoLivingOperationsRoute
+  WorkIndexRoute: typeof WorkIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -177,32 +178,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/work': {
-      id: '/work'
+    '/work/': {
+      id: '/work/'
       path: '/work'
-      fullPath: '/work'
-      preLoaderRoute: typeof WorkRouteImport
+      fullPath: '/work/'
+      preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/co-living-operations': {
       id: '/work/co-living-operations'
-      path: '/co-living-operations'
+      path: '/work/co-living-operations'
       fullPath: '/work/co-living-operations'
       preLoaderRoute: typeof WorkCoLivingOperationsRouteImport
-      parentRoute: typeof WorkRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface WorkRouteChildren {
-  WorkCoLivingOperationsRoute: typeof WorkCoLivingOperationsRoute
-}
-
-const WorkRouteChildren: WorkRouteChildren = {
-  WorkCoLivingOperationsRoute: WorkCoLivingOperationsRoute,
-}
-
-const WorkRouteWithChildren = WorkRoute._addFileChildren(WorkRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -211,7 +202,8 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ServicesRoute: ServicesRoute,
   TermsRoute: TermsRoute,
-  WorkRoute: WorkRouteWithChildren,
+  WorkCoLivingOperationsRoute: WorkCoLivingOperationsRoute,
+  WorkIndexRoute: WorkIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
