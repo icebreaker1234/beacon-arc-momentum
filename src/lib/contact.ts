@@ -21,8 +21,9 @@ export type SubmitResult =
   { status: "sent" } | { status: "not-configured" } | { status: "error"; message: string };
 
 /**
- * Sends an enquiry as JSON to the configured endpoint (Formspree, Basin,
- * Getform, or your own API). Success is reported only for a 2xx response.
+ * Sends an enquiry as JSON to the configured endpoint (FormSubmit by
+ * default, which forwards it to the team inbox). Success is reported only
+ * for a 2xx response.
  */
 export async function submitEnquiry(
   values: Enquiry,
@@ -38,7 +39,13 @@ export async function submitEnquiry(
     const response = await fetchImpl(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ ...payload, source: "beacon-arc-website" }),
+      body: JSON.stringify({
+        ...payload,
+        source: "beacon-arc-website",
+        _subject: `New enquiry from ${values.name} — Beacon Arc website`,
+        _template: "table",
+        _captcha: "false",
+      }),
     });
     if (response.ok) return { status: "sent" };
     return {

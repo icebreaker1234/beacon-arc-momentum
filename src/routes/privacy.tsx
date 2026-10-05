@@ -31,9 +31,9 @@ function Privacy() {
       <article className="site-container max-w-3xl py-20">
         <Legal title="Information you provide">
           The enquiry form asks for your name, work email, company, project context, optional budget
-          range, and preferred contact method. If no form delivery service is connected, the form
-          only checks your details in your browser and nothing is sent or stored. Once a provider is
-          connected, this section should name it and explain how long enquiries are kept.
+          range, and preferred contact method. When you send the form, these details are delivered
+          to the Beacon Arc team inbox (team.beaconarc@gmail.com) through FormSubmit, the form
+          delivery service. They are used only to reply to your enquiry.
         </Legal>
         <Legal title="Browser preferences">
           If you turn the optional hero sound on or off, the site remembers that choice in this
@@ -41,13 +41,13 @@ function Privacy() {
           site data removes it. Sound never starts without you pressing the sound control.
         </Legal>
         <Legal title="Analytics and third parties">
-          No analytics, advertising trackers, or third-party form processors are currently
-          configured in this version of the site.
+          No analytics or advertising trackers are configured on this site. The only third party
+          that receives information you share is FormSubmit, which delivers enquiry form messages to
+          the team inbox.
         </Legal>
         <Legal title="Your choices">
-          You can use the website with sound off and without submitting information. Once a contact
-          service is connected, this policy should name the provider, retention period, purpose, and
-          contact method for privacy requests.
+          You can use the website with sound off and without submitting information. For any privacy
+          request — including deleting an enquiry you sent — email team.beaconarc@gmail.com.
         </Legal>
         <p className="mt-12 text-xs text-muted-foreground">
           Last updated: October 2026 · Draft pending final business and service details.
