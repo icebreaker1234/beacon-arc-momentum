@@ -1,5 +1,7 @@
 const clampStage = (progress: number, start: number, end: number) =>
   Math.max(0, Math.min(1, (progress - start) / (end - start)));
+const revealThenResolve = (progress: number, start: number) =>
+  clampStage(progress, start, start + 0.12) * (1 - clampStage(progress, 0.62, 0.72));
 
 const arcPoint = (progress: number) => {
   const t = Math.max(0, Math.min(1, progress));
@@ -15,6 +17,9 @@ export function WorkflowVisual({ compact = false, progress }: { compact?: boolea
   const resolvedProgress = progress ?? 1;
   const arcProgress = clampStage(resolvedProgress, 0.06, 0.46);
   const dashboardProgress = clampStage(resolvedProgress, 0.61, 0.78);
+  const enquiryProgress = revealThenResolve(resolvedProgress, 0.24);
+  const automationProgress = revealThenResolve(resolvedProgress, 0.37);
+  const handoffProgress = revealThenResolve(resolvedProgress, 0.49);
   const tip = arcPoint(arcProgress);
   const nodes = [
     { x: 58, y: 386, start: 0 },
@@ -47,16 +52,16 @@ export function WorkflowVisual({ compact = false, progress }: { compact?: boolea
           </g>;
         })}
       </svg>
-      <div className="absolute left-[7%] top-[65%] w-32 border border-surface-dark-border bg-surface-dark/90 p-3 shadow-2xl backdrop-blur sm:top-[71%] sm:w-36" style={isScrollStory ? { opacity: clampStage(resolvedProgress, 0.24, 0.36), transform: `translateY(${(1 - clampStage(resolvedProgress, 0.24, 0.36)) * 14}px)` } : undefined}>
+      <div className="absolute left-[7%] top-[65%] w-32 border border-surface-dark-border bg-surface-dark/90 p-3 shadow-2xl backdrop-blur sm:top-[71%] sm:w-36" style={isScrollStory ? { opacity: enquiryProgress, transform: `translateY(${(1 - enquiryProgress) * 14}px)` } : undefined}>
         <span className="block text-[10px] uppercase tracking-widest text-surface-dark-muted">New enquiry</span><span className="mt-2 block text-sm text-surface-dark-foreground">Details captured</span>
       </div>
-      <div className="absolute left-[25%] top-[21%] w-32 border border-surface-dark-border bg-surface-dark/90 p-3 shadow-2xl backdrop-blur sm:left-[27%] sm:top-[24%] sm:w-36" style={isScrollStory ? { opacity: clampStage(resolvedProgress, 0.37, 0.49), transform: `translateY(${(1 - clampStage(resolvedProgress, 0.37, 0.49)) * 14}px)` } : undefined}>
+      <div className="absolute left-[25%] top-[21%] w-32 border border-surface-dark-border bg-surface-dark/90 p-3 shadow-2xl backdrop-blur sm:left-[27%] sm:top-[24%] sm:w-36" style={isScrollStory ? { opacity: automationProgress, transform: `translateY(${(1 - automationProgress) * 14}px)` } : undefined}>
         <span className="block text-[10px] uppercase tracking-widest text-surface-dark-muted">Automation</span><span className="mt-2 block text-sm text-surface-dark-foreground">Owner notified</span>
       </div>
-      {isScrollStory && <div className="absolute right-[7%] top-[35%] w-32 border border-surface-dark-border bg-surface-dark/90 p-3 shadow-2xl backdrop-blur sm:top-[40%] sm:w-36" style={{ opacity: clampStage(resolvedProgress, 0.49, 0.59), transform: `translateY(${(1 - clampStage(resolvedProgress, 0.49, 0.59)) * 14}px)` }}>
+      {isScrollStory && <div className="absolute right-[7%] top-[35%] w-32 border border-surface-dark-border bg-surface-dark/90 p-3 shadow-2xl backdrop-blur sm:top-[40%] sm:w-36" style={{ opacity: handoffProgress, transform: `translateY(${(1 - handoffProgress) * 14}px)` }}>
         <span className="block text-[10px] uppercase tracking-widest text-surface-dark-muted">Team handoff</span><span className="mt-2 block text-sm text-surface-dark-foreground">Next step assigned</span>
       </div>}
-      <div className="absolute right-[5%] top-[13%] w-[53%] min-w-48 border border-surface-dark-border bg-surface-dark/95 p-3 shadow-2xl backdrop-blur md:right-[7%] md:top-[18%] md:w-[46%] md:p-5" style={isScrollStory ? { opacity: dashboardProgress, transform: `translateY(${(1 - dashboardProgress) * 24}px) scale(${0.96 + dashboardProgress * 0.04})` } : undefined}>
+      <div className="absolute right-[4%] top-[12%] w-[62%] min-w-48 border border-surface-dark-border bg-surface-dark/95 p-3 shadow-2xl backdrop-blur md:right-[7%] md:top-[18%] md:w-[46%] md:p-5" style={isScrollStory ? { opacity: dashboardProgress, transform: `translateY(${(1 - dashboardProgress) * 24}px) scale(${0.96 + dashboardProgress * 0.04})` } : undefined}>
         <div className="flex items-center justify-between border-b border-surface-dark-border pb-3"><span className="text-xs font-medium text-surface-dark-foreground">Operations overview</span><span className="size-2 rounded-full bg-primary" /></div>
         <div className="mt-4 grid grid-cols-3 gap-2"><Metric label="Open" value="08"/><Metric label="Moving" value="14"/><Metric label="Done" value="31"/></div>
         <div className="mt-4 space-y-2"><Row name="Client record" state="Ready" progress={isScrollStory ? clampStage(resolvedProgress, 0.72, 0.81) : 1}/><Row name="Team handoff" state="Sent" progress={isScrollStory ? clampStage(resolvedProgress, 0.79, 0.88) : 1}/><Row name="Next action" state="Set" progress={isScrollStory ? clampStage(resolvedProgress, 0.86, 0.95) : 1}/></div>
