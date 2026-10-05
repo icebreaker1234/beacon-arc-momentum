@@ -178,6 +178,8 @@
 @utility fine-grid { background-image: linear-gradient(to right, color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--border) 45%, transparent) 1px, transparent 1px); background-size: 4rem 4rem; }
 @utility arc-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw-arc 2.2s cubic-bezier(.2,.75,.25,1) 0.25s forwards; }
 @utility rise { animation: rise-in 700ms cubic-bezier(.2,.75,.25,1) both; }
+@utility beacon-pulse { transform-box: fill-box; transform-origin: center; animation: beacon-pulse 2.4s ease-in-out infinite; }
 
 @keyframes draw-arc { to { stroke-dashoffset: 0; } }
 @keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes beacon-pulse { 0%, 100% { opacity: .45; transform: scale(.82); } 50% { opacity: .9; transform: scale(1.18); } }
