@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Layers, Link2, Repeat2, Sparkles } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Callout } from "@/components/site/callout";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -33,18 +33,45 @@ const trustItems = [
 ];
 function Index() {
   const heroRef = useRef<HTMLElement>(null);
+  const [heroProgress, setHeroProgress] = useState(0);
+  useEffect(() => {
+    let frame = 0;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      frame = 0;
+      if (reducedMotion.matches) { setHeroProgress(1); return; }
+      const hero = heroRef.current;
+      if (!hero) return;
+      const rect = hero.getBoundingClientRect();
+      const distance = Math.max(1, rect.height - window.innerHeight);
+      setHeroProgress(Math.max(0, Math.min(1, -rect.top / distance)));
+    };
+    const requestUpdate = () => { if (!frame) frame = window.requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    reducedMotion.addEventListener("change", requestUpdate);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      reducedMotion.removeEventListener("change", requestUpdate);
+    };
+  }, []);
   return <>
-    <section ref={heroRef} className="relative overflow-hidden bg-surface-dark text-surface-dark-foreground">
+    <section ref={heroRef} className="relative h-[210svh] bg-surface-dark text-surface-dark-foreground md:h-[190svh]">
       <div className="absolute inset-0 opacity-20 fine-grid" aria-hidden="true" />
-      <div className="site-container relative grid min-h-[calc(100svh-5rem)] gap-12 py-16 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:py-20">
+      <div className="sticky top-16 overflow-hidden md:top-20">
+      <div className="site-container relative grid min-h-[calc(100svh-4rem)] content-center gap-5 py-5 md:min-h-[calc(100svh-5rem)] md:gap-8 md:py-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-12 lg:py-12">
         <div className="relative z-10 rise"><div className="flex items-center justify-between gap-4"><p className="eyebrow">Software, automation & AI for growing businesses</p><SoundToggle heroRef={heroRef}/></div>
-          <h1 className="mt-7 max-w-3xl font-display text-5xl font-medium leading-[0.98] md:text-7xl lg:text-[5.4rem]">Better systems.<br/><span className="text-primary">Clearer momentum.</span></h1>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-surface-dark-muted">We turn time-consuming processes and disconnected tools into useful software, automation, and AI workflows—so your team can focus on moving the business forward.</p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button asChild size="lg"><Link to="/contact">Book a discovery call <ArrowRight/></Link></Button><Button asChild variant="outline" size="lg" className="border-surface-dark-border bg-transparent text-surface-dark-foreground hover:bg-surface-dark-foreground hover:text-surface-dark"><Link to="/services">Explore what we build</Link></Button></div>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-medium leading-[0.98] sm:text-5xl md:mt-6 md:text-7xl lg:text-[5.4rem]">Better systems.<br/><span className="text-primary">Clearer momentum.</span></h1>
+          <p className="mt-4 max-w-xl text-base leading-7 text-surface-dark-muted md:mt-6 md:text-lg md:leading-8">We turn time-consuming processes and disconnected tools into useful software, automation, and AI workflows—so your team can focus on moving the business forward.</p>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row md:mt-8"><Button asChild size="lg"><Link to="/contact">Book a discovery call <ArrowRight/></Link></Button><Button asChild variant="outline" size="lg" className="border-surface-dark-border bg-transparent text-surface-dark-foreground hover:bg-surface-dark-foreground hover:text-surface-dark"><Link to="/services">Explore what we build</Link></Button></div>
         </div>
-        <div className="relative lg:-mr-16"><WorkflowVisual/></div>
+        <div className="relative lg:-mr-16"><WorkflowVisual progress={heroProgress}/></div>
       </div>
-      <div className="site-container relative border-t border-surface-dark-border py-5 text-xs uppercase tracking-widest text-surface-dark-muted">Scroll to follow the signal <span className="ml-3 text-primary">↓</span></div>
+      <div className="site-container relative border-t border-surface-dark-border py-3 text-xs uppercase tracking-widest text-surface-dark-muted md:py-4">Scroll to follow the signal <span className="ml-3 text-primary">↓</span></div>
+      </div>
     </section>
 
     <section className="bg-background py-24 md:py-32"><div className="site-container"><SectionHeading eyebrow="The friction" title="Good teams lose time in the gaps between tools." copy="The problem is rarely a lack of effort. It is usually a process held together by copying, chasing, checking, and remembering."/><div className="mt-14 grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-5">{["Repetitive work","Disconnected systems","Manual reporting","Slow handoffs","Unclear data"].map((x,i)=><div key={x} className="min-h-44 border-b border-r border-border p-6"><span className="text-xs text-primary">0{i+1}</span><h3 className="mt-10 font-display text-xl font-medium">{x}</h3></div>)}</div></div></section>
